@@ -1,4 +1,4 @@
-name: C++ Build
+name: C++ Build with Bear
 
 on:
   push:
@@ -16,21 +16,20 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2  # Checkout your code from the repository
 
-      - name: Set up C++ environment
-        uses: actions/setup-cpp@v1  # This installs a C++ compiler
-        with:
-          compiler: g++  # Use g++ for C++ compilation
-
       - name: Install dependencies
         run: |
           sudo apt-get update
           sudo apt-get install -y build-essential  # Install essential build tools
-          sudo apt-get install -y libsdl2-dev libsdl2-image-dev  # SDL2 dependencies
-          sudo apt-get install -y cmake  # Install cmake if needed for other parts of your project
+          sudo apt-get install -y libsdl2-dev libsdl2-image-dev  # Install SDL2 dependencies
+          sudo apt-get install -y bear  # Install Bear (Build EAR) to generate compile_commands.json
+
+      - name: Generate compilation database with Bear
+        run: |
+          bear -- make  # Use Bear to wrap the make command and generate compile_commands.json
 
       - name: Build with make
         run: |
-          make  # Run make to build your project
+          make  # Run make to build your project (this is also wrapped by bear)
 
       - name: Run tests (optional)
         run: |
