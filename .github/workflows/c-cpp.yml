@@ -16,6 +16,10 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2  # Checkout your code from the repository
 
+      - name: Verify Makefile exists
+        run: |
+          ls -l  # List files in the current directory to check if the Makefile exists
+
       - name: Install dependencies
         run: |
           sudo apt-get update
@@ -35,7 +39,3 @@ jobs:
       - name: Run tests (optional)
         run: |
           ./bin/main  # Run the compiled executable (optional step)
-
-      - name: Print file structure
-        run: |
-          ls -R  # List all files to verify the file structure (e.g., to see if Makefile exists)
