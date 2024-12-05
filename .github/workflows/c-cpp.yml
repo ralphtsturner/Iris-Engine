@@ -22,7 +22,16 @@ jobs:
           sudo apt-get install -y build-essential  # Install essential build tools
           sudo apt-get install -y libsdl2-dev libsdl2-image-dev  # Install SDL2 dependencies
           sudo apt-get install -y bear  # Install Bear (Build EAR) to generate compile_commands.json
+          sudo apt-get install -y xvfb  # Install Xvfb (virtual framebuffer)
           bear --version  # Check if bear was installed correctly
+
+      - name: Start Xvfb to simulate a display
+        run: |
+          Xvfb :99 -screen 0 1280x1024x24 &  # Start Xvfb on display :99
+
+      - name: Set the DISPLAY environment variable
+        run: |
+          export DISPLAY=:99  # Set the DISPLAY environment variable to the virtual framebuffer
 
       - name: Change directory to Iris Engine
         run: cd "Iris Engine"  # Change to the directory containing the Makefile
