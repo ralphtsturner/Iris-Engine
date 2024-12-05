@@ -22,11 +22,12 @@ jobs:
           sudo apt-get install -y build-essential  # Install essential build tools
           sudo apt-get install -y libsdl2-dev libsdl2-image-dev  # Install SDL2 dependencies
           sudo apt-get install -y bear  # Install Bear (Build EAR) to generate compile_commands.json
+          bear --version  # Check if bear was installed correctly
 
       - name: Generate compilation database with Bear
         run: |
           bear -- make  # Use Bear to wrap the make command and generate compile_commands.json
-
+          
       - name: Build with make
         run: |
           make  # Run make to build your project (this is also wrapped by bear)
@@ -34,3 +35,7 @@ jobs:
       - name: Run tests (optional)
         run: |
           ./bin/main  # Run the compiled executable (optional step)
+
+      - name: Print file structure
+        run: |
+          ls -R  # List all files to verify the file structure (e.g., to see if Makefile exists)
