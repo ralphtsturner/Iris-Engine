@@ -1,0 +1,18 @@
+[
+  {
+    "arguments": [
+      "/usr/bin/g++",
+      "-Iinc",
+      "-Wall",
+      "-Wextra",
+      "-std=c++17",
+      "-c",
+      "-o",
+      "build/main.o",
+      "src/main.cpp"
+    ],
+    "directory": "/home/ralph/Dev/C++/SDL2/Iris Engine",
+    "file": "/home/ralph/Dev/C++/SDL2/Iris Engine/src/main.cpp",
+    "output": "/home/ralph/Dev/C++/SDL2/Iris Engine/build/main.o"
+  }
+]
