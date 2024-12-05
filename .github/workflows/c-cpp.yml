@@ -13,7 +13,7 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
+    - name: make
+      run:  make
     - name: main
       run: ./bin/main
-    - name: make
-      run: bear -- make
