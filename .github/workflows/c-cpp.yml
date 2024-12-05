@@ -1,19 +1,37 @@
-name: C/C++ CI
+name: C++ Build
 
 on:
   push:
-    branches: [ "main" ]
+    branches:
+      - main  # Trigger on pushes to the main branch
   pull_request:
-    branches: [ "main" ]
+    branches:
+      - main  # Trigger on pull requests targeting the main branch
 
 jobs:
   build:
-
-    runs-on: ubuntu-latest
-
+    runs-on: ubuntu-latest  # Use the latest Ubuntu environment
+    
     steps:
-    - uses: actions/checkout@v4
-    - name: make
-      run:  make
-    - name: main
-      run: ./bin/main
+      - name: Checkout repository
+        uses: actions/checkout@v2  # Checkout your code from the repository
+
+      - name: Set up C++ environment
+        uses: actions/setup-cpp@v1  # This installs a C++ compiler
+        with:
+          compiler: g++  # Use g++ for C++ compilation
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential  # Install essential build tools
+          sudo apt-get install -y libsdl2-dev libsdl2-image-dev  # SDL2 dependencies
+          sudo apt-get install -y cmake  # Install cmake if needed for other parts of your project
+
+      - name: Build with make
+        run: |
+          make  # Run make to build your project
+
+      - name: Run tests (optional)
+        run: |
+          ./bin/main  # Run the compiled executable (optional step)
