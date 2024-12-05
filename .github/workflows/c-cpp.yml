@@ -16,10 +16,6 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2  # Checkout your code from the repository
 
-      - name: Verify Makefile exists
-        run: |
-          ls -l  # List files in the current directory to check if the Makefile exists
-
       - name: Install dependencies
         run: |
           sudo apt-get update
@@ -28,14 +24,20 @@ jobs:
           sudo apt-get install -y bear  # Install Bear (Build EAR) to generate compile_commands.json
           bear --version  # Check if bear was installed correctly
 
+      - name: Change directory to Iris Engine
+        run: cd "Iris Engine"  # Change to the directory containing the Makefile
+
       - name: Generate compilation database with Bear
         run: |
+          cd "Iris Engine"  # Change directory to where Makefile is located
           bear -- make  # Use Bear to wrap the make command and generate compile_commands.json
           
       - name: Build with make
         run: |
+          cd "Iris Engine"  # Change directory to where Makefile is located
           make  # Run make to build your project (this is also wrapped by bear)
 
       - name: Run tests (optional)
         run: |
+          cd "Iris Engine"  # Change directory to where Makefile is located
           ./bin/main  # Run the compiled executable (optional step)
