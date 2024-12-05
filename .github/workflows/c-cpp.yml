@@ -14,6 +14,6 @@ jobs:
     steps:
     - uses: actions/checkout@v4
     - name: main
-      run: ./main
+      run: ./bin/main
     - name: make
       run: bear -- make
