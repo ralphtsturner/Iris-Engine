@@ -1,28 +1,37 @@
-#include "engine/window.h"
+#include "engine/engine.h"
+#include "engine/input.h"
+#include "engine/texture.h"
+#include <iostream>
 
-void custom_event_handler(SDL_Event& e) {
-    if (e.type == SDL_KEYDOWN) {
-        std::cout << "Key pressed: " << SDL_GetKeyName(e.key.keysym.sym) << std::endl;
-    } else if (e.type == SDL_MOUSEBUTTONDOWN) {
-        std::cout << "Mouse button pressed at (" << e.button.x << ", " << e.button.y << ")" << std::endl;
-    }
-}
+int main() {
+    Engine engine;
 
-int main(int argc, char* argv[]) {
-    Window game;
-
-    if (!game.create_window("C++ SDL2 Window", 800, 600)) {
-        return -1; // Exit if window creation fails
+    // Initialize the engine
+    if (!engine.init("Iris Engine", 800, 600)) {
+        std::cerr << "Failed to initialize engine!" << std::endl;
+        return -1;
     }
 
-    if (!game.load_image("res/sprite.png")) {
-        return -1; // Exit if image loading fails
+    // Load the texture
+    if (!Texture::load("player", "res/sprite.png", Engine::get_renderer())) {
+        std::cerr << "Failed to load player texture!" << std::endl;
+        return -1;
     }
 
-    game.scale_image(64, 64);  // Scale the image to 64x64
+    int player_x = 400, player_y = 300;
+    int player_speed = 5;
 
-    game.main_loop(custom_event_handler);
-    game.cleanup();
+    Input input;
+
+    // Game loop
+    engine.run([&]() {
+        input.handle_input(engine.is_running(), player_x, player_y, player_speed, Engine::get_renderer());
+    }, [&]() {
+        Texture::render("player", player_x, player_y, Engine::get_renderer());
+    });
+
+    // Unload all textures
+    Texture::unload_all();
 
     return 0;
 }

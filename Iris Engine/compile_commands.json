@@ -3,6 +3,7 @@
     "arguments": [
       "/usr/bin/g++",
       "-Iinc",
+      "-Iinc/engine",
       "-Wall",
       "-Wextra",
       "-std=c++17",
@@ -14,5 +15,56 @@
     "directory": "/home/ralph/Dev/C++/SDL2/Iris Engine",
     "file": "/home/ralph/Dev/C++/SDL2/Iris Engine/src/main.cpp",
     "output": "/home/ralph/Dev/C++/SDL2/Iris Engine/build/main.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/g++",
+      "-Iinc",
+      "-Iinc/engine",
+      "-Wall",
+      "-Wextra",
+      "-std=c++17",
+      "-c",
+      "-o",
+      "build/engine/engine.o",
+      "src/engine/engine.cpp"
+    ],
+    "directory": "/home/ralph/Dev/C++/SDL2/Iris Engine",
+    "file": "/home/ralph/Dev/C++/SDL2/Iris Engine/src/engine/engine.cpp",
+    "output": "/home/ralph/Dev/C++/SDL2/Iris Engine/build/engine/engine.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/g++",
+      "-Iinc",
+      "-Iinc/engine",
+      "-Wall",
+      "-Wextra",
+      "-std=c++17",
+      "-c",
+      "-o",
+      "build/engine/input.o",
+      "src/engine/input.cpp"
+    ],
+    "directory": "/home/ralph/Dev/C++/SDL2/Iris Engine",
+    "file": "/home/ralph/Dev/C++/SDL2/Iris Engine/src/engine/input.cpp",
+    "output": "/home/ralph/Dev/C++/SDL2/Iris Engine/build/engine/input.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/g++",
+      "-Iinc",
+      "-Iinc/engine",
+      "-Wall",
+      "-Wextra",
+      "-std=c++17",
+      "-c",
+      "-o",
+      "build/engine/texture.o",
+      "src/engine/texture.cpp"
+    ],
+    "directory": "/home/ralph/Dev/C++/SDL2/Iris Engine",
+    "file": "/home/ralph/Dev/C++/SDL2/Iris Engine/src/engine/texture.cpp",
+    "output": "/home/ralph/Dev/C++/SDL2/Iris Engine/build/engine/texture.o"
   }
 ]

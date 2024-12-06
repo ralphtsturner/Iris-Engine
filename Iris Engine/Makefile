@@ -1,7 +1,7 @@
 # Compiler and flags
 CXX := g++
-CXXFLAGS := -Iinc -Wall -Wextra -std=c++17
-LDFLAGS := -lSDL2 -lSDL2_image  # Link SDL2_image
+CXXFLAGS := -Iinc -Iinc/engine -Wall -Wextra -std=c++17
+LDFLAGS := -lSDL2 -lSDL2_image
 
 # Directories
 SRC_DIR := src
@@ -12,7 +12,7 @@ BIN_DIR := bin
 TARGET := $(BIN_DIR)/main
 
 # Source and object files
-SRCS := $(shell find $(SRC_DIR) -name '*.cpp')
+SRCS := $(wildcard $(SRC_DIR)/*.cpp $(SRC_DIR)/engine/*.cpp)
 OBJS := $(patsubst $(SRC_DIR)/%.cpp, $(BUILD_DIR)/%.o, $(SRCS))
 
 # Default target
@@ -25,7 +25,7 @@ $(TARGET): $(OBJS)
 
 # Compile source files to object files
 $(BUILD_DIR)/%.o: $(SRC_DIR)/%.cpp
-	@mkdir -p $(dir $@)
+	@mkdir -p $(BUILD_DIR)
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
 # Clean build files
