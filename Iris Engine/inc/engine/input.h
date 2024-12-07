@@ -1,11 +1,14 @@
-#ifndef INPUT_H
-#define INPUT_H
-
-#include <SDL2/SDL.h>
+#pragma once
+#include <SDL.h>
 
 class Input {
 public:
-    void handle_input(const bool& is_running, int& player_x, int& player_y, int speed, SDL_Renderer* renderer);
-};
+    // Call this function each frame to handle input queries
+    void update();
 
-#endif // INPUT_H
+    // Query functions to check if a key is currently pressed
+    bool is_key_pressed(SDL_Scancode scancode) const;
+
+private:
+    const Uint8* current_key_state = nullptr;
+};
