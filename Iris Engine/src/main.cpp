@@ -2,7 +2,7 @@
 #include "engine/input.h"
 #include "engine/texture.h"
 #include "engine/animation.h"
-#include "engine/collision.h"  // Include the collision header
+#include "engine/collision.h"
 #include <SDL.h>
 #include <iostream>
 
@@ -71,19 +71,8 @@ int main(int argc, char* argv[]) {
         player_rect.x += move_x;
         player_rect.y += move_y;
 
-        // Collision handling for boundaries (ensure player stays within window bounds)
-        if (player_rect.x < 0) {
-            player_rect.x = 0;  // Prevent moving left out of the window
-        }
-        if (player_rect.x + PLAYER_WIDTH > WINDOW_WIDTH) {
-            player_rect.x = WINDOW_WIDTH - PLAYER_WIDTH;  // Prevent moving right out of the window
-        }
-        if (player_rect.y < 0) {
-            player_rect.y = 0;  // Prevent moving above the window
-        }
-        if (player_rect.y + PLAYER_HEIGHT > WINDOW_HEIGHT) {
-            player_rect.y = WINDOW_HEIGHT - PLAYER_HEIGHT;  // Prevent moving below the window
-        }
+        // Enforce boundary collisions using the Collision class
+        collision.enforce_boundaries(player_rect);
 
         // Get delta time for animation update
         float delta_time = engine.get_delta_time();
@@ -93,11 +82,6 @@ int main(int argc, char* argv[]) {
 
         // Render animation
         farmer_animation.render(player_rect.x, player_rect.y, engine.get_renderer());
-
-        // Optional: Render the border (optional debug feature)
-        SDL_SetRenderDrawColor(engine.get_renderer(), 255, 0, 0, 255);  // Red border color
-        SDL_Rect border = { 0, 0, WINDOW_WIDTH, WINDOW_HEIGHT };
-        SDL_RenderDrawRect(engine.get_renderer(), &border);
 
         SDL_RenderPresent(engine.get_renderer());
     }
