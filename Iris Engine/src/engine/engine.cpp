@@ -1,13 +1,19 @@
 #include "engine/engine.h"
 #include <SDL.h>
-#include <glad/glad.h>
 #include <iostream>
 
-Engine::Engine() : running(false), last_time(0) {}
+Engine::Engine() : running(false), last_time(0), window(nullptr), renderer(nullptr), gl_context(nullptr) {}
 
 Engine::~Engine() {
-    SDL_DestroyRenderer(renderer);
-    SDL_DestroyWindow(window);
+    if (gl_context) {
+        SDL_GL_DeleteContext(gl_context);
+    }
+    if (renderer) {
+        SDL_DestroyRenderer(renderer);
+    }
+    if (window) {
+        SDL_DestroyWindow(window);
+    }
     SDL_Quit();
 }
 
@@ -17,26 +23,40 @@ bool Engine::init(const char* title, int width, int height) {
         return false;
     }
 
-    window = SDL_CreateWindow(title, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, SDL_WINDOW_OPENGL);
+    // Set OpenGL attributes
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 4);
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 1);
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
+
+    // Create SDL window
+    window = SDL_CreateWindow(title, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN);
     if (!window) {
         std::cerr << "Window could not be created! SDL_Error: " << SDL_GetError() << std::endl;
         return false;
     }
 
-    renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
-    if (!renderer) {
-        std::cerr << "Renderer could not be created! SDL_Error: " << SDL_GetError() << std::endl;
-        return false;
-    }
-
+    // Create OpenGL context
     gl_context = SDL_GL_CreateContext(window);
     if (!gl_context) {
         std::cerr << "OpenGL context could not be created! SDL_Error: " << SDL_GetError() << std::endl;
         return false;
     }
 
-    if (!gladLoadGLLoader((GLADloadproc)SDL_GL_GetProcAddress)) {
-        std::cerr << "Failed to initialize OpenGL loader!" << std::endl;
+    // Load OpenGL attributes
+    int gl_major_version, gl_minor_version;
+    SDL_GL_GetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, &gl_major_version);
+    SDL_GL_GetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, &gl_minor_version);
+    std::cout << "OpenGL Version: " << gl_major_version << "." << gl_minor_version << std::endl;
+
+    // Enable VSync
+    if (SDL_GL_SetSwapInterval(1) < 0) {
+        std::cerr << "Warning: Unable to set VSync! SDL_Error: " << SDL_GetError() << std::endl;
+    }
+
+    // Create SDL renderer
+    renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+    if (!renderer) {
+        std::cerr << "Renderer could not be created! SDL_Error: " << SDL_GetError() << std::endl;
         return false;
     }
 

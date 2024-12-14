@@ -13,15 +13,15 @@ public:
     void quit();
     bool is_running() const;
     SDL_Renderer* get_renderer() const;
-    float get_delta_time();  // Get the delta time since the last frame
+    float get_delta_time();
     void run(std::function<void()> game_logic, std::function<void()> game_render);
 
 private:
     bool running;
+    Uint64 last_time;
     SDL_Window* window;
     SDL_Renderer* renderer;
     SDL_GLContext gl_context;
-    Uint64 last_time;
 };
 
 #endif // ENGINE_H
