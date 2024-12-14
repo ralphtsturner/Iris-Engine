@@ -1,7 +1,2 @@
-﻿  engine.cpp
-  input.cpp
-  texture.cpp
-  main.cpp
-  Generating Code...
-  glad.c
+﻿  main.cpp
   Iris Engine.vcxproj -> C:\Users\Ralph\source\repos\Iris Engine\x64\Debug\Iris Engine.exe

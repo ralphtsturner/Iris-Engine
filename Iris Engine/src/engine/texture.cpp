@@ -1,6 +1,6 @@
 #include "engine/texture.h"
-#include <iostream>
 #include <SDL_image.h>
+#include <iostream>
 
 std::unordered_map<std::string, SDL_Texture*> Texture::textures;
 
@@ -23,14 +23,14 @@ bool Texture::load(const std::string& id, const std::string& path, SDL_Renderer*
     return true;
 }
 
-void Texture::render(const std::string& id, int x, int y, SDL_Renderer* renderer) {
+void Texture::render(const std::string& id, int x, int y, SDL_Renderer* renderer, SDL_Rect* clip) {
     if (textures.find(id) == textures.end()) {
         std::cerr << "Texture not found: " << id << std::endl;
         return;
     }
 
-    SDL_Rect dest_rect = { x, y, 64, 64 };  // Assuming texture size is 64x64
-    SDL_RenderCopy(renderer, textures[id], nullptr, &dest_rect);
+    SDL_Rect dest_rect = { x, y, clip ? clip->w : 64, clip ? clip->h : 64 };  // Default size if no clip
+    SDL_RenderCopy(renderer, textures[id], clip, &dest_rect);
 }
 
 void Texture::unload(const std::string& id) {
@@ -45,4 +45,8 @@ void Texture::unload_all() {
         SDL_DestroyTexture(texture.second);
     }
     textures.clear();
+}
+
+bool Texture::is_loaded(const std::string& id) {
+    return textures.find(id) != textures.end();
 }

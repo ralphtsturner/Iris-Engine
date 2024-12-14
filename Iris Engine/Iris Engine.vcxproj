@@ -21,7 +21,7 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{8fabfe08-923c-4e94-a93b-06140539db52}</ProjectGuid>
+    <ProjectGuid>{245176ea-27ff-41f1-8f01-1d18c87dcae8}</ProjectGuid>
     <RootNamespace>IrisEngine</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
@@ -104,13 +104,13 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\SDL2_image\include;C:\SDL2\include;C:\Users\Ralph\source\repos\Iris Engine\Iris Engine\inc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\SDL2_image\include;C:\SDL2\include;C:\Users\Ralph\source\repos\Iris Engine\Iris Engine\inc</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>C:\SDL2_image\lib\x64;C:\SDL2\lib\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -121,7 +121,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\SDL2_image\include;C:\SDL2\include;C:\Users\Ralph\source\repos\Iris Engine\Iris Engine\inc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\SDL2_image\include;C:\SDL2\include;C:\Users\Ralph\source\repos\Iris Engine\Iris Engine\inc</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -129,10 +129,12 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>C:\SDL2_image\lib\x64;C:\SDL2\lib\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="inc\engine\animation.h" />
+    <ClInclude Include="inc\engine\collision.h" />
     <ClInclude Include="inc\engine\engine.h" />
     <ClInclude Include="inc\engine\input.h" />
     <ClInclude Include="inc\engine\texture.h" />
@@ -140,9 +142,7 @@
     <ClInclude Include="inc\KHR\khrplatform.h" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="res\sprite.png" />
-  </ItemGroup>
-  <ItemGroup>
+    <ClCompile Include="src\engine\animation.cpp" />
     <ClCompile Include="src\engine\engine.cpp" />
     <ClCompile Include="src\engine\input.cpp" />
     <ClCompile Include="src\engine\texture.cpp" />
@@ -150,6 +150,25 @@
     <ClCompile Include="src\main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="res\characters\farmer1.png" />
+    <Image Include="res\characters\farmer2.png" />
+    <Image Include="res\characters\farmer_idle.png" />
+    <Image Include="res\characters\sprite.png" />
+    <Image Include="res\cookie.png" />
+    <Image Include="res\ground\dirt.png" />
+    <Image Include="res\ground\grass.png" />
+    <Image Include="res\ground\grass_path.png" />
+    <Image Include="res\rain\rain1.png" />
+    <Image Include="res\rain\rain2.png" />
+    <Image Include="res\rain\rain3.png" />
+    <Image Include="res\rain\rain4.png" />
+    <Image Include="res\sky\sky_1.png" />
+    <Image Include="res\sky\sky_2.png" />
+    <Image Include="res\sky\sky_blue.png" />
+    <Image Include="res\sprite.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="SDL2.dll" />
     <None Include="SDL2_image.dll" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

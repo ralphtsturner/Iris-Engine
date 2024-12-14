@@ -3,7 +3,7 @@
 #include <glad/glad.h>
 #include <iostream>
 
-Engine::Engine() : running(false), last_time(0) {}  // Initialize variables here
+Engine::Engine() : running(false), last_time(0) {}
 
 Engine::~Engine() {
     SDL_DestroyRenderer(renderer);
@@ -40,7 +40,7 @@ bool Engine::init(const char* title, int width, int height) {
         return false;
     }
 
-    last_time = SDL_GetPerformanceCounter();  // Set initial time
+    last_time = SDL_GetPerformanceCounter();
     running = true;
     return true;
 }
@@ -54,7 +54,7 @@ bool Engine::is_running() const {
 }
 
 SDL_Renderer* Engine::get_renderer() const {
-    return renderer;  // Return the renderer
+    return renderer;
 }
 
 float Engine::get_delta_time() {
@@ -64,24 +64,18 @@ float Engine::get_delta_time() {
     return delta_time;
 }
 
-void Engine::run(std::function<void(Input&)> game_logic, std::function<void()> game_render) {
+void Engine::run(std::function<void()> game_logic, std::function<void()> game_render) {
     SDL_Event e;
 
     while (running) {
-        // Handle events
         while (SDL_PollEvent(&e) != 0) {
             if (e.type == SDL_QUIT) {
                 quit();
             }
         }
 
-        // Update input state
-        input.update();
+        game_logic();
 
-        // Call the user's game logic function
-        game_logic(input);
-
-        // Rendering
         SDL_RenderClear(renderer);
         game_render();
         SDL_RenderPresent(renderer);
