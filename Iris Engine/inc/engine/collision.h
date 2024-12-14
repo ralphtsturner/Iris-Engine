@@ -1,34 +1,24 @@
-#pragma once
+#ifndef COLLISION_H
+#define COLLISION_H
+
 #include <SDL.h>
 
 class Collision {
 public:
-    Collision(int x, int y, int w, int h) : x(x), y(y), width(w), height(h) {}
+    // Constructor that takes boundaries as arguments
+    Collision(int left, int top, int right, int bottom);
 
-    // Check if a rectangle is within boundaries and adjust its position if necessary
-    void enforce_boundaries(SDL_Rect& rect) {
-        if (rect.x < x) {
-            rect.x = x;  // Prevent moving left out of bounds
-        }
-        if (rect.x + rect.w > x + width) {
-            rect.x = x + width - rect.w;  // Prevent moving right out of bounds
-        }
-        if (rect.y < y) {
-            rect.y = y;  // Prevent moving above bounds
-        }
-        if (rect.y + rect.h > y + height) {
-            rect.y = y + height - rect.h;  // Prevent moving below bounds
-        }
-    }
+    // Method to check for a collision between two SDL_Rect objects
+    bool check_collision(const SDL_Rect& rect1, const SDL_Rect& rect2) const;
 
-    // Check if two rectangles collide (AABB collision detection)
-    bool check_collision(const SDL_Rect& rect) {
-        return (rect.x < x + width &&
-            rect.x + rect.w > x &&
-            rect.y < y + height &&
-            rect.y + rect.h > y);
-    }
+    // Method to enforce boundaries (keep the rect within the screen)
+    void enforce_boundaries(SDL_Rect& rect) const;
+
+    // Method to resolve collisions by adjusting the position of the rectangle
+    void resolve_collision(SDL_Rect& rect1, const SDL_Rect& rect2) const;
 
 private:
-    int x, y, width, height;  // The bounds of the area (e.g., window boundaries)
+    int left, top, right, bottom;
 };
+
+#endif // COLLISION_H

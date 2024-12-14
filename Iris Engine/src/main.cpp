@@ -3,8 +3,10 @@
 #include "engine/texture.h"
 #include "engine/animation.h"
 #include "engine/collision.h"
+#include "engine/entity.h"
 #include <SDL.h>
 #include <iostream>
+#include <vector>
 
 const int WINDOW_WIDTH = 800;
 const int WINDOW_HEIGHT = 600;
@@ -18,27 +20,29 @@ int main(int argc, char* argv[]) {
         return -1;
     }
 
-    // Initialize the input handler
-    Input input;
-
-    // Load the farmer textures
+    // Load textures
     Texture::load("farmer1", "res/characters/farmer1.png", engine.get_renderer());
     Texture::load("farmer2", "res/characters/farmer2.png", engine.get_renderer());
+    Texture::load("grass", "res/ground/grass.png", engine.get_renderer());
 
-    // Create animation
+    // Set up animation
     std::vector<std::string> farmer_frames = { "farmer1", "farmer2" };
     Animation farmer_animation(farmer_frames, PLAYER_WIDTH, PLAYER_HEIGHT, 100, true);
 
-    int player_x = 100, player_y = 100;
-    SDL_Event event;
+    // Initialize player entity
+    Entity player(100, 100, PLAYER_WIDTH, PLAYER_HEIGHT);
+    player.set_animation(farmer_animation);
 
-    // Define player movement speed
+    SDL_Event event;
+    Input input;
     int move_speed = 5;
 
-    // Create the Collision object with window boundaries
-    Collision collision(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
-
-    SDL_Rect player_rect = { player_x, player_y, PLAYER_WIDTH, PLAYER_HEIGHT };
+    // Set up collidable objects (e.g., grass tiles)
+    std::vector<SDL_Rect> collidable_objects;
+    for (int i = 0; i < 10; ++i) {
+        SDL_Rect grass_rect = { 200 + i * 64, 200, 64, 64 };
+        collidable_objects.push_back(grass_rect);
+    }
 
     // Game loop
     while (engine.is_running()) {
@@ -50,15 +54,10 @@ int main(int argc, char* argv[]) {
         }
 
         input.update();
-
-        // Simulate movement
         int move_x = 0, move_y = 0;
 
         if (input.is_key_pressed(SDL_SCANCODE_W)) {
             move_y = -move_speed;  // Move up
-        }
-        if (input.is_key_pressed(SDL_SCANCODE_S)) {
-            move_y = move_speed;  // Move down
         }
         if (input.is_key_pressed(SDL_SCANCODE_A)) {
             move_x = -move_speed;  // Move left
@@ -67,27 +66,37 @@ int main(int argc, char* argv[]) {
             move_x = move_speed;  // Move right
         }
 
-        // Update player position
-        player_rect.x += move_x;
-        player_rect.y += move_y;
+        if (input.is_key_pressed(SDL_SCANCODE_S)) {
+            move_y = move_speed;  // Move down
+        }
 
-        // Enforce boundary collisions using the Collision class
-        collision.enforce_boundaries(player_rect);
+        // Try moving the player, checking for collisions
+        SDL_Rect player_rect = player.get_rect();
+        player.move(move_x, move_y);
 
-        // Get delta time for animation update
+        // Prevent overlapping with collidable objects
+        for (const auto& object : collidable_objects) {
+            if (player.check_collision_with(object)) {
+                player.move(-move_x, -move_y);  // Undo movement if collision detected
+                break;
+            }
+        }
+
+        // Update animation and render
         float delta_time = engine.get_delta_time();
-        farmer_animation.update(delta_time);  // Update animation with delta time
-
+        player.update(delta_time);  // Update animation state
         SDL_RenderClear(engine.get_renderer());
+        player.render(engine.get_renderer());
 
-        // Render animation
-        farmer_animation.render(player_rect.x, player_rect.y, engine.get_renderer());
+        // Render collidable objects (grass)
+        for (const auto& object : collidable_objects) {
+            Texture::render("grass", object.x, object.y, engine.get_renderer());
+        }
 
         SDL_RenderPresent(engine.get_renderer());
     }
 
     Texture::unload_all();
     engine.quit();
-
     return 0;
 }

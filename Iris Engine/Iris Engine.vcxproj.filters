@@ -36,6 +36,9 @@
     <ClInclude Include="inc\engine\collision.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="inc\engine\entity.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\engine\engine.cpp">
@@ -54,6 +57,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\engine\animation.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\engine\entity.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\engine\collision.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

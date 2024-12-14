@@ -3,8 +3,15 @@
 #include <iostream>
 
 std::unordered_map<std::string, SDL_Texture*> Texture::textures;
+std::unordered_map<std::string, int> Texture::usage_count;  // Define usage_count
 
 bool Texture::load(const std::string& id, const std::string& path, SDL_Renderer* renderer) {
+    // If texture is already loaded, return true
+    if (textures.find(id) != textures.end()) {
+        usage_count[id]++;  // Increment usage count
+        return true;
+    }
+
     SDL_Surface* surface = IMG_Load(path.c_str());
     if (!surface) {
         std::cerr << "Failed to load texture: " << path << " SDL_image Error: " << IMG_GetError() << std::endl;
@@ -20,6 +27,7 @@ bool Texture::load(const std::string& id, const std::string& path, SDL_Renderer*
     }
 
     textures[id] = texture;
+    usage_count[id] = 1;  // First use of the texture
     return true;
 }
 
@@ -35,8 +43,14 @@ void Texture::render(const std::string& id, int x, int y, SDL_Renderer* renderer
 
 void Texture::unload(const std::string& id) {
     if (textures.find(id) != textures.end()) {
-        SDL_DestroyTexture(textures[id]);
-        textures.erase(id);
+        usage_count[id]--;  // Decrease usage count
+
+        // If no more instances are using this texture, unload it
+        if (usage_count[id] <= 0) {
+            SDL_DestroyTexture(textures[id]);
+            textures.erase(id);
+            usage_count.erase(id);  // Remove texture from usage count
+        }
     }
 }
 
@@ -45,6 +59,7 @@ void Texture::unload_all() {
         SDL_DestroyTexture(texture.second);
     }
     textures.clear();
+    usage_count.clear();  // Clear the usage count map
 }
 
 bool Texture::is_loaded(const std::string& id) {

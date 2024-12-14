@@ -136,6 +136,7 @@
     <ClInclude Include="inc\engine\animation.h" />
     <ClInclude Include="inc\engine\collision.h" />
     <ClInclude Include="inc\engine\engine.h" />
+    <ClInclude Include="inc\engine\entity.h" />
     <ClInclude Include="inc\engine\input.h" />
     <ClInclude Include="inc\engine\texture.h" />
     <ClInclude Include="inc\glad\glad.h" />
@@ -143,7 +144,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\engine\animation.cpp" />
+    <ClCompile Include="src\engine\collision.cpp" />
     <ClCompile Include="src\engine\engine.cpp" />
+    <ClCompile Include="src\engine\entity.cpp" />
     <ClCompile Include="src\engine\input.cpp" />
     <ClCompile Include="src\engine\texture.cpp" />
     <ClCompile Include="src\glad.c" />

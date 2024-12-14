@@ -1,9 +1,7 @@
-#ifndef TEXTURE_H
-#define TEXTURE_H
-
+#pragma once
 #include <SDL.h>
-#include <string>
 #include <unordered_map>
+#include <string>
 
 class Texture {
 public:
@@ -15,6 +13,5 @@ public:
 
 private:
     static std::unordered_map<std::string, SDL_Texture*> textures;
+    static std::unordered_map<std::string, int> usage_count;  // Track usage count
 };
-
-#endif

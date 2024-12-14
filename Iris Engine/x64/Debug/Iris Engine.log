@@ -1,2 +1,6 @@
-﻿  main.cpp
+﻿  animation.cpp
+C:\Users\Ralph\source\repos\Iris Engine\Iris Engine\src\engine\animation.cpp(24,52): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+  entity.cpp
+  main.cpp
+  Generating Code...
   Iris Engine.vcxproj -> C:\Users\Ralph\source\repos\Iris Engine\x64\Debug\Iris Engine.exe
