@@ -18,6 +18,7 @@ public:
     void update(float delta_time);
     bool check_collision_with(SDL_Rect other_rect) const;
     void set_animation(const Animation& anim);
+    bool is_on_ground() const;
 
     SDL_Rect get_rect() const;
 
@@ -25,6 +26,7 @@ protected:
     SDL_Rect rect; // The rectangle for the entity
     Animation* current_animation; // The animation of the entity
     Collision collision;          // Collision detection helper
+    int velocity_y;               // Vertical velocity for gravity
 };
 
 #endif // ENTITY_H

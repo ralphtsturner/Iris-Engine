@@ -11,9 +11,12 @@ public:
 
     bool init(const char* title, int width, int height);
     void quit();
+
     bool is_running() const;
     SDL_Renderer* get_renderer() const;
+
     float get_delta_time();
+
     void run(std::function<void()> game_logic, std::function<void()> game_render);
 
 private:
@@ -24,4 +27,4 @@ private:
     SDL_GLContext gl_context;
 };
 
-#endif // ENGINE_H
+#endif

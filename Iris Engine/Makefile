@@ -1,7 +1,7 @@
 # Compiler and flags
 CXX := g++
 CXXFLAGS := -I/opt/homebrew/include/SDL2/ -Iinc -Iinc/engine -Iinclude/glad -Wall -Wextra -std=c++17
-LDFLAGS := -L/opt/homebrew/lib -lSDL2 -lSDL2_image
+LDFLAGS := -L/opt/homebrew/lib -lSDL2 -lSDL2_image -lSDL2_mixer
 
 # Directories
 SRC_DIR := src

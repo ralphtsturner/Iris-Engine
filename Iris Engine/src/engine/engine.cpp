@@ -1,5 +1,6 @@
 #include "engine/engine.h"
-#include <SDL.h>
+#include "engine/audio.h" // Include your audio system header
+#include <SDL_mixer.h>
 #include <iostream>
 
 Engine::Engine() : running(false), last_time(0), window(nullptr), renderer(nullptr), gl_context(nullptr) {}
@@ -14,12 +15,21 @@ Engine::~Engine() {
     if (window) {
         SDL_DestroyWindow(window);
     }
+
+    // Quit the audio system
+    Audio::quit();  // Fix this line
     SDL_Quit();
 }
 
 bool Engine::init(const char* title, int width, int height) {
-    if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER) < 0) {
+    if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER | SDL_INIT_AUDIO) < 0) {
         std::cerr << "SDL could not initialize! SDL_Error: " << SDL_GetError() << std::endl;
+        return false;
+    }
+
+    // Initialize SDL_mixer
+    if (!Audio::init()) {
+        std::cerr << "Failed to initialize audio system!" << std::endl;
         return false;
     }
 
