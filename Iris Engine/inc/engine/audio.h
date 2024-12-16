@@ -1,30 +1,29 @@
 #ifndef AUDIO_H
 #define AUDIO_H
 
-#include <SDL_mixer.h>
+#include <SDL_mixer.h> // Add this line
 #include <string>
-#include <unordered_map>
+#include <map>
 #include <vector>
 
 class Audio {
 public:
     static bool init();
     static void quit();
-
-    static void load_music(const std::string& id, const std::string& path);
-    static void play_music(const std::string& id);
+    static void load_music(const std::string& name, const std::string& path);
+    static void play_music(const std::string& name, int loops = -1);
     static void stop_music();
     static void set_music_sequence(const std::vector<std::string>& sequence);
-    static void remove_music(const std::string& id);
-    static void cleanup();
+
+    static void load_sound(const std::string& name, const std::string& path);
+    static void play_sound(const std::string& name);
+    static void play_next_track();
 
 private:
-    static void play_next_music();
-    static void music_finished_callback();
-
-    static std::unordered_map<std::string, Mix_Music*> music_library;
+    static std::map<std::string, Mix_Chunk*> sounds; // For sound effects
+    static std::map<std::string, Mix_Music*> music;  // For music tracks
     static std::vector<std::string> music_sequence;
-    static size_t current_music_index;
+    static size_t current_track;
 };
 
-#endif
+#endif // AUDIO_H

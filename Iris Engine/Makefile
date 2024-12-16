@@ -26,7 +26,7 @@ $(TARGET): $(OBJS)
 
 # Compile source files to object files
 $(BUILD_DIR)/%.o: $(SRC_DIR)/%.cpp
-	@mkdir -p $(BUILD_DIR)
+	@mkdir -p $(BUILD_DIR) $(BUILD_DIR)/engine
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
 # Compile C source files (e.g., glad.c) to object files
