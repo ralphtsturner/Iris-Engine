@@ -1,15 +1,4 @@
-#include "engine/engine.h"
-#include "engine/input.h"
-#include "engine/texture.h"
-#include "engine/animation.h"
-#include "engine/collision.h"
-#include "engine/entity.h"
-#include "engine/audio.h"
-#include <SDL.h>
-#include <iostream>
-#include <vector>
-#include <cstdlib>
-#include <ctime>
+#include "engine/global.h"
 
 const int WINDOW_WIDTH = 800;
 const int WINDOW_HEIGHT = 600;
@@ -24,6 +13,12 @@ int main(int /*argc*/, char* /*argv*/[]) {
         return -1;
     }
 
+    // Initialize SDL_ttf
+    if (TTF_Init() == -1) {
+        std::cerr << "Failed to initialize SDL_ttf: " << TTF_GetError() << std::endl;
+        return -1;
+    }
+
     // Initialize Audio system
     if (!Audio::init()) {
         std::cerr << "Failed to initialize audio system!" << std::endl;
@@ -34,8 +29,7 @@ int main(int /*argc*/, char* /*argv*/[]) {
     Audio::load_music("background", "res/music/background.mp3");
     Audio::load_music("background2", "res/music/background-2.mp3");
 
-    // Set up music sequence
-    Audio::set_music_sequence({ "background", "background2" });
+    Audio::set_music_sequence({"background", "background2"});
 
     // Load sound effects
     Audio::load_sound("coin", "res/sounds/coin.wav");
@@ -46,6 +40,13 @@ int main(int /*argc*/, char* /*argv*/[]) {
     Texture::load("grass", "res/ground/grass.png", engine.get_renderer());
     Texture::load("sky_blue", "res/sky/sky_blue.png", engine.get_renderer());
     Texture::load("cookie", "res/cookie.png", engine.get_renderer());
+
+    // Initialize font
+    Font game_font;
+    if (!game_font.init("res/fonts/arial.ttf", 24)) {  // Adjust font path
+        std::cerr << "Failed to initialize font!" << std::endl;
+        return -1;
+    }
 
     // Initialize random seed
     std::srand(static_cast<unsigned>(std::time(0)));
@@ -71,7 +72,7 @@ int main(int /*argc*/, char* /*argv*/[]) {
 
     // Set up cookie
     bool cookie_visible = true; // Track if the cookie is visible
-    SDL_Rect cookie_rect = {200, 500, 64, 64}; // Cookie's position and size
+    SDL_Rect cookie_rect = { 200, 500, 64, 64 }; // Cookie's position and size
 
     // Game loop
     while (engine.is_running()) {
@@ -139,11 +140,18 @@ int main(int /*argc*/, char* /*argv*/[]) {
         // Render player
         player.render(engine.get_renderer());
 
+        // Render score text
+        SDL_Color white = { 255, 255, 255, 255 };  // White color
+        game_font.render("Score: 100", 10, 10, white, engine.get_renderer());
+
         SDL_RenderPresent(engine.get_renderer());  // Present the backbuffer
     }
 
+    // Clean up
+    game_font.clean();
     Texture::unload_all();
     Audio::quit();
+    TTF_Quit();
     engine.quit();
     return 0;
 }

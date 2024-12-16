@@ -39,6 +39,18 @@
     <ClInclude Include="inc\engine\entity.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="inc\engine\audio.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\engine\config.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\engine\font.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\engine\global.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\engine\engine.cpp">
@@ -63,6 +75,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\engine\collision.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\engine\audio.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\engine\font.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -119,5 +137,6 @@
   <ItemGroup>
     <None Include="SDL2.dll" />
     <None Include="SDL2_image.dll" />
+    <None Include="SDL2_mixer.dll" />
   </ItemGroup>
 </Project>
