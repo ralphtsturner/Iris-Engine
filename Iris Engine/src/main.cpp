@@ -37,11 +37,15 @@ int main(int /*argc*/, char* /*argv*/[]) {
     // Set up music sequence
     Audio::set_music_sequence({ "background", "background2" });
 
+    // Load sound effects
+    Audio::load_sound("coin", "res/sounds/coin.wav");
+
     // Load textures
     Texture::load("farmer1", "res/characters/farmer1.png", engine.get_renderer());
     Texture::load("farmer2", "res/characters/farmer2.png", engine.get_renderer());
     Texture::load("grass", "res/ground/grass.png", engine.get_renderer());
-    Texture::load("sky_blue", "res/sky/sky_blue.png", engine.get_renderer());  // Plain sky
+    Texture::load("sky_blue", "res/sky/sky_blue.png", engine.get_renderer());
+    Texture::load("cookie", "res/cookie.png", engine.get_renderer());
 
     // Initialize random seed
     std::srand(static_cast<unsigned>(std::time(0)));
@@ -65,6 +69,10 @@ int main(int /*argc*/, char* /*argv*/[]) {
         collidable_objects.push_back(grass_rect);
     }
 
+    // Set up cookie
+    bool cookie_visible = true; // Track if the cookie is visible
+    SDL_Rect cookie_rect = {200, 500, 64, 64}; // Cookie's position and size
+
     // Game loop
     while (engine.is_running()) {
         while (SDL_PollEvent(&event)) {
@@ -86,9 +94,6 @@ int main(int /*argc*/, char* /*argv*/[]) {
         if (input.is_key_pressed(SDL_SCANCODE_D)) {
             move_x = move_speed;  // Move right
         }
-        //if (input.is_key_pressed(SDL_SCANCODE_S)) {
-        //    move_y = move_speed;  // Move down
-        //}
 
         // Try moving the player, checking for collisions
         player.move(move_x, move_y);
@@ -99,6 +104,12 @@ int main(int /*argc*/, char* /*argv*/[]) {
                 player.move(-move_x, -move_y);  // Undo movement if collision detected
                 break;
             }
+        }
+
+        // Check for collision with the cookie
+        if (cookie_visible && player.check_collision_with(cookie_rect)) {
+            cookie_visible = false; // Make the cookie disappear
+            Audio::play_sound("coin"); // Play coin sound
         }
 
         // Update animation and render
@@ -118,6 +129,11 @@ int main(int /*argc*/, char* /*argv*/[]) {
         // Render collidable objects (grass)
         for (const auto& object : collidable_objects) {
             Texture::render("grass", object.x, object.y, engine.get_renderer());
+        }
+
+        // Render the cookie if it's still visible
+        if (cookie_visible) {
+            Texture::render("cookie", cookie_rect.x, cookie_rect.y, engine.get_renderer());
         }
 
         // Render player
